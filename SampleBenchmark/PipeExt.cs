@@ -15,7 +15,7 @@ namespace SampleBenchmark
             throw new PipeCmdException($"Expected: {ecmd} - received: {cmd}");
         }
         public static Cmd ExpectDone(this FPipe p) => Expect(p, Cmd.Done);
-        public static Cmd ExpectReady(this FPipe p) => Expect(p, Cmd.Done);
+        public static Cmd ExpectReady(this FPipe p) => Expect(p, Cmd.Ready);
         //public static void Go(this FPipe p) => p.WriteCmd(Cmd.Go);
         //public static void Go(this FPipe p) => p.WriteCmd(Cmd.Go);
     }
