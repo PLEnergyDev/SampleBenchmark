@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+const int WARMUPITERATIONS=3;
+const int ITERATIONS = 3;
+bool fileexists = false;
+chan ready;
+chan go;
+chan connect;
+chan done;
+</declaration>
+	<template>
+		<name>Server</name>
+		<declaration>int warmupiterations = WARMUPITERATIONS;
+int iterations = ITERATIONS;</declaration>
+		<location id="id0" x="-255" y="-518">
+			<name x="-306" y="-535">Initial</name>
+		</location>
+		<location id="id1" x="-255" y="-416">
+			<name x="-323" y="-441">Initialize</name>
+		</location>
+		<location id="id2" x="-255" y="-212">
+			<name x="-323" y="-237">warmup</name>
+		</location>
+		<location id="id3" x="59" y="-314">
+			<name x="49" y="-348">warmupPreRun</name>
+			<urgent/>
+		</location>
+		<location id="id4" x="59" y="-212">
+			<name x="76" y="-246">warmupRun</name>
+		</location>
+		<location id="id5" x="59" y="-136">
+			<name x="49" y="-170">warmupPostRun</name>
+			<urgent/>
+		</location>
+		<location id="id6" x="-255" y="-68">
+			<name x="-357" y="-110">ExecuteBenchmark</name>
+		</location>
+		<location id="id7" x="-382" y="25">
+			<name x="-450" y="-17">PostRun</name>
+		</location>
+		<location id="id8" x="-255" y="25">
+			<name x="-265" y="-9">Run</name>
+		</location>
+		<location id="id9" x="-119" y="25">
+			<name x="-129" y="-9">PreRun</name>
+		</location>
+		<location id="id10" x="-620" y="25">
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-544" y="0">done!</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-374" y="-68">iterations&gt;0</label>
+			<label kind="synchronisation" x="-425" y="-102">ready!</label>
+			<label kind="assignment" x="-374" y="-51">iterations--</label>
+			<nail x="-382" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-357" y="0">done?</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-237" y="8">go!</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-195" y="-51">ready?</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-119" y="-93">warmupiterations&lt;=0</label>
+			<label kind="synchronisation" x="-187" y="-119">ready!</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-246" y="-178">warmupiterations&gt;0</label>
+			<label kind="synchronisation" x="-246" y="-161">ready!</label>
+			<label kind="assignment" x="-246" y="-195">warmupiterations--</label>
+			<nail x="-255" y="-136"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="76" y="-195">done?</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="67" y="-280">go!</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-127" y="-289">ready?</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-238" y="-390">ready?</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-238" y="-492">connect?</label>
+		</transition>
+	</template>
+	<template>
+		<name x="5" y="5">Client</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id11" x="-93" y="-136">
+			<name x="-144" y="-170">Initial</name>
+		</location>
+		<location id="id12" x="-93" y="-34">
+			<name x="-161" y="-59">Prepare</name>
+		</location>
+		<location id="id13" x="-93" y="59">
+			<name x="-68" y="51">prerun</name>
+		</location>
+		<location id="id14" x="-93" y="178">
+			<name x="-110" y="136">Running</name>
+		</location>
+		<location id="id15" x="25" y="178">
+			<name x="51" y="161">ReadyToRun</name>
+		</location>
+		<location id="id16" x="-212" y="178">
+			<name x="-222" y="144">PostRun</name>
+		</location>
+		<location id="id17" x="-340" y="85">
+			<name x="-392" y="42">Done</name>
+		</location>
+		<init ref="id11"/>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-212" y="93">ready?</label>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-340" y="127">done?</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="-170" y="153">done!</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-51" y="153">go?</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="0" y="93">ready!</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-76" y="0">ready!</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-76" y="-102">connect!</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+SProcess = Server();
+CProcess = Client();
+// List one or more processes to be composed into a system.
+system SProcess, CProcess;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
