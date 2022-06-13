@@ -5,11 +5,11 @@
 
 void bm(){
   long k;
+  printf("running...\n");
   for(int i =0;i<100000;i++){
     k = k+i;
-    printf(".");
   }
-  printf("\n");
+  printf("done\n");
 }
 
 
@@ -28,11 +28,12 @@ int main(int argc, char **argv){
   writeCmd(s, Ready);
   do{
     writeCmd(s, Ready);
-    readCmd(s); // expecting go
+    c=readCmd(s); // expecting go
+    printf("received (expected go): %s", tos(c));
     bm();
     writeCmd(s, Done); //
   } while ((c = readCmd(s)) == Ready ); 
   // we should have read done at this point
-  printf("done");
+  printf("\ndone\n");
   closeSocket(s);
 }
