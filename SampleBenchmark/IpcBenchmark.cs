@@ -17,7 +17,7 @@ namespace SampleBenchmark
 
         public IpcState Initialize(IBenchmark benchmark)
         {
-            var pipe = new FPipe(BenchmarkedMethod.Name);
+            var pipe = new FPipe(BenchmarkedMethod.Name+".pipe");
             pipe.ExpectReady();
             return new IpcState(pipe);            
         }

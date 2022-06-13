@@ -109,17 +109,23 @@ int receiveHandshake(int socket){
 }
 
 int shakeHands(int socket){
+  printf("shaking hands");
   int32_t k = 25;
   int32_t result;
   if(4!=write(socket, (char*)(&k), sizeof(int32_t))){
     printf("Error initializing handshake!");
     return -1;
   }
+  if(4!=read(socket, (char*)&result, sizeof(int32_t))){
+    printf("Error receiving handshake");
+    return -2;
+  }
 
   if(result!=k){
-    printf("Bad handshake response..");
+    printf("Bad handshake response: %d\n", result);
     return -3;
   }
+  printf("...\n");
   return 0;
 }
 
