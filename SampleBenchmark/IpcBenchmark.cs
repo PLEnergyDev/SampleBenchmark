@@ -4,12 +4,12 @@ using SocketComm;
 
 namespace SampleBenchmark
 {
-    class IpcBenchmark : IBenchmarkLifecycle<IpcState>
+    class IpcBenchmarkLifecycle : IBenchmarkLifecycle<IpcState>
     {
         public MethodInfo BenchmarkedMethod { get; }
         public BenchmarkInfo BenchmarkInfo { get; }
 
-        public IpcBenchmark(BenchmarkInfo benchmarkInfo, MethodInfo benchmarkedMethod)
+        public IpcBenchmarkLifecycle(BenchmarkInfo benchmarkInfo, MethodInfo benchmarkedMethod)
         {
             BenchmarkInfo = benchmarkInfo;
             BenchmarkedMethod = benchmarkedMethod;
@@ -18,16 +18,14 @@ namespace SampleBenchmark
         public IpcState Initialize(IBenchmark benchmark)
         {
             var pipe = new FPipe(BenchmarkedMethod.Name);
-            var cmd = pipe.ReadCmd();
-            if (cmd == Cmd.Ready)
-                return new IpcState(pipe);
-            else throw new Exception("not ready!");
-            
+            pipe.ExpectReady();
+            return new IpcState(pipe);            
         }
 
         public IpcState PostRun(IpcState oldstate)
         {
-            throw new NotImplementedException();
+            oldstate.Pipe.SendReady();
+            return oldstate;
         }
 
         public IpcState PreRun(IpcState oldstate)
@@ -39,14 +37,18 @@ namespace SampleBenchmark
 
         public object Run(IpcState state)
         {
-            state.Pipe.Go();
+            state.Pipe.SendGo();
             state.Pipe.ExpectDone();
             return state;
         }
 
         public IpcState WarmupIteration(IpcState oldstate)
         {
-            
+            var p = oldstate.Pipe;
+            p.ExpectReady();
+            p.SendGo();
+            p.ExpectDone();
+            p.SendReady();
             return oldstate;
         }
     }

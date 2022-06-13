@@ -2,7 +2,7 @@
 
 namespace SampleBenchmark
 {
-    class IpcState
+    public class IpcState
     {
         public FPipe Pipe { get; set; }
 
