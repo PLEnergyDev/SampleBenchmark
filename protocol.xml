@@ -180,10 +180,10 @@ int iterations = ITERATIONS;</declaration>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
-SProcess = Server();
-CProcess = Client();
+S = Server();
+C = Client();
 // List one or more processes to be composed into a system.
-system SProcess, CProcess;
+system S, C;
     </system>
 	<queries>
 		<query>
