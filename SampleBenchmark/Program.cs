@@ -43,16 +43,19 @@ namespace SampleBenchmark
             }
 
 
-            using var zipToOpen = new FileStream("results.zip", FileMode.Open);
-            using var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update);
-            foreach (string file in Directory.EnumerateFiles(Path.Join(options.OutputPath, "_pvalues/"), "*.csv",
-                SearchOption.AllDirectories))
+            if (File.Exists("results.zip"))
             {
-                archive.CreateEntryFromFile(file, file);
-            }
+                using var zipToOpen = new FileStream("results.zip", FileMode.Open);
+                using var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update);
+                foreach (string file in Directory.EnumerateFiles(Path.Join(options.OutputPath, "_pvalues/"), "*.csv",
+                    SearchOption.AllDirectories))
+                {
+                    archive.CreateEntryFromFile(file, file);
+                }
 
-            archive.Dispose();
-            zipToOpen.Dispose();
+                archive.Dispose();
+                zipToOpen.Dispose();
+            }
 
             LatexExporter.GenerateAverageTable();
             LatexExporter.GenerateTexImages();
