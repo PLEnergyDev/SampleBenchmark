@@ -54,6 +54,7 @@ int iterations = ITERATIONS;</declaration>
 		<transition>
 			<source ref="id7"/>
 			<target ref="id10"/>
+			<label kind="guard" x="-586" y="25">iterations&lt;=0</label>
 			<label kind="synchronisation" x="-544" y="0">done!</label>
 		</transition>
 		<transition>
