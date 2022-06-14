@@ -48,6 +48,7 @@ int iterations = ITERATIONS;</declaration>
 			<name x="-129" y="-9">PreRun</name>
 		</location>
 		<location id="id10" x="-620" y="25">
+			<name x="-630" y="-9">Done</name>
 		</location>
 		<init ref="id0"/>
 		<transition>
@@ -183,11 +184,11 @@ int iterations = ITERATIONS;</declaration>
 S = Server();
 C = Client();
 // List one or more processes to be composed into a system.
-system S, C;
+system Server, Client;
     </system>
 	<queries>
 		<query>
-			<formula></formula>
+			<formula>A[] Client.Done imply Server.Done</formula>
 			<comment></comment>
 		</query>
 	</queries>
