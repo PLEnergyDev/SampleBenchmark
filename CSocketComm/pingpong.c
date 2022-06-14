@@ -2,13 +2,12 @@
 #include <stdio.h>
 #include "scomm.h"
 #include "cmd.h"
+#include "mmul.h"
 
 void bm(){
   long k;
   printf("running...\n");
-  for(int i =0;i<100000;i++){
-    k = k+i;
-  }
+  mmul();
   printf("done\n");
 }
 
